@@ -23,9 +23,12 @@ class BasePreArchiver(object):
     def __call__(self, *args, **kwargs):
         print '#'*10
 
+
 class BaseArchiver(object):
     pass
 
+
+# https://parallel-ssh.readthedocs.org/en/latest/pssh_client.html
 class BaseTransporter(object):
     '''The more important class, this is like the core of the fabric clone:
     it allows to open a tunnel  from the (usually) local computer to a certain
@@ -45,8 +48,17 @@ class BaseTransporter(object):
         self.hosts = hosts
 
         self.client = ParallelSSHClient(hosts)
+        self._initial_connection()
 
-        logger.info(self._exec_command('uname -a'))
+    def _parse_output(self, output):
+        '''This parse for our usage the output of the execution'''
+
+    def _log_channel_output(self, output, prefix=None):
+        for host in output:
+            for stdout in output[host]['stdout']:
+                logger.info('%s%s' % (prefix, stdout))
+            for stderr in output[host]['stderr']:
+                logger.warn('%s%s' % (prefix, stderr))
 
     def cd(self, path):
         # handle absolute or relative paths
@@ -65,11 +77,25 @@ class BaseTransporter(object):
         # dst must be remote
         pass
 
-    def _exec_command(self, cmd):
+    def _initial_connection(self):
+        '''The ratio of this method is that we need to connect immediately to the remote endpoints
+        in order to be sure that hosts are accessible.
+
+        AuthenticationException, UnknownHostException and ConnectionErrorException are possible only
+        at the first attempt (TODO: check, I'm not sure for ConnectionErrorException, if the server
+        lost connection?).
+        '''
         try:
-            return self.client.run_command(cmd)
+            self._log_channel_output(self.client.run_command('uname -a'), prefix=' --- start connection: ')
         except (AuthenticationException, UnknownHostException, ConnectionErrorException) as e:
             logger.exception(e)
+            raise e
+
+    def _exec_command(self, cmd):
+        return self.client.run_command(cmd)
+
+    def run(self, cmd):
+        return self._exec_command(cmd)
 
 
 class BaseRemotePreExtractor(object):
