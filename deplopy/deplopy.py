@@ -47,7 +47,7 @@ class DeployBase(object):
     source_archiver = GitSourceArchiver()
     pre_archiver    = PreArchiver()
     archiver        = TarArchiver()
-    transporter     = SSHTransporter()
+    transporter     = SSHTransporter
     pre_extractor   = RemotePreExtractor()
     extractor       = RemoteTarExtractor()
     post_extractor  = RemotePostExtractor()
