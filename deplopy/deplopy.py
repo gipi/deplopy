@@ -14,6 +14,12 @@ from .base import (
 
 logger = logging.getLogger(__name__)
 
+stream = logging.StreamHandler()
+formatter = logging.Formatter('%(levelname)s - %(filename)s:%(lineno)d - %(message)s')
+
+logger.setLevel(logging.DEBUG)
+logger.addHandler(stream)
+stream.setFormatter(formatter)
 
 # IMPLEMENTATIONS #
 class GitSourceArchiver(BaseSourceArchiver):
