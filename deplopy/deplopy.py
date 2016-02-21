@@ -1,35 +1,25 @@
 # -*- coding: utf-8 -*-
 import logging
 
+from .base import (
+    BaseSourceArchiver,
+    BasePreArchiver,
+    BaseArchiver,
+    BaseTransporter,
+    BaseRemotePreExtractor,
+    BaseRemoteExtractor,
+    BaseRemotePostExtractor,
+)
+
 
 logger = logging.getLogger(__name__)
 
-# BASE CLASSES #
-class BaseSourceArchiver(object):
-    def __call__(self, *args, **kwargs):
-        print '*'*10
-
-class BasePreArchiver(object):
-    def __call__(self, *args, **kwargs):
-        print '#'*10
-
-class BaseArchiver(object):
-    pass
-
-class BaseTransporter(object):
-    pass
-
-class BaseRemotePreExtractor(object):
-    pass
-
-class BaseRemoteExtractor(object):
-    pass
-
-class BaseRemotePostExtractor(object):
-    pass
 
 # IMPLEMENTATIONS #
 class GitSourceArchiver(BaseSourceArchiver):
+    pass
+
+class PreArchiver(BasePreArchiver):
     pass
 
 class TarArchiver(BaseArchiver):
@@ -49,7 +39,7 @@ class RemotePostExtractor(BaseRemotePostExtractor):
 
 class DeployBase(object):
     source_archiver = GitSourceArchiver()
-    pre_archiver    = BasePreArchiver()
+    pre_archiver    = PreArchiver()
     archiver        = TarArchiver()
     transporter     = SSHTransporter()
     pre_extractor   = RemotePreExtractor()
@@ -58,3 +48,4 @@ class DeployBase(object):
 
     def run(self, *args, **kwargs):
         self.archiver()
+
