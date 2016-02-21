@@ -72,10 +72,15 @@ class BaseTransporter(object):
     def rm(self, path):
         pass
 
-    def cp(self, src, dst):
+    def cp(self, src, dst, **kwargs):
         # src can be local
         # dst must be remote
-        pass
+        logger.debug('cp %s -> %s' % (src, dst))
+        events = self.client.copy_file(src, dst)
+
+        for event in events:
+            event.get()
+
 
     def _initial_connection(self):
         '''The ratio of this method is that we need to connect immediately to the remote endpoints
