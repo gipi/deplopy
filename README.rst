@@ -2,21 +2,12 @@
 deplopy
 ===============================
 
-.. image:: https://img.shields.io/pypi/v/deplopy.svg
-        :target: https://pypi.python.org/pypi/deplopy
-
-.. image:: https://img.shields.io/travis/gipi/deplopy.svg
-        :target: https://travis-ci.org/gipi/deplopy
-
-.. image:: https://readthedocs.org/projects/deplopy/badge/?version=latest
-        :target: https://readthedocs.org/projects/deplopy/?badge=latest
-        :alt: Documentation Status
+** THIS IS AN EXPERIMENT, DONT'EXPECT THAT THERE IS ANYTHING THAT WORKS **
 
 
 Forget fabric, deploy like a boss
 
 * Free software: ISC license
-* Documentation: https://deplopy.readthedocs.org.
 
 Features
 --------
